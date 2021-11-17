@@ -8,9 +8,10 @@
     "devStart": "nodemon server.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
-    "cors": "^2.8.5"
+    "mongoose": "^6.0.13"
   },
   "repository": {
     "url": "https://github.com/freeCodeCamp/boilerplate-project-exercisetracker"
