@@ -11,8 +11,8 @@ const ExerciseSchema = new mongoose.Schema({
     require: true,
   },
   date: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    require: true,
   },
 })
 
@@ -23,7 +23,11 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     maxLength: [30, 'A username should be less then 30 characters'],
   },
-  count: Number,
+  count: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
   log: [ExerciseSchema],
 })
 
