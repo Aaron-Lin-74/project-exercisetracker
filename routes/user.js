@@ -60,6 +60,20 @@ router.post('/:_id/exercises', getUser, async (req, res) => {
 })
 
 router.get('/:_id/logs', getUser, (req, res) => {
+  const { from, to, limit } = req.query
+  if (from !== undefined) {
+    res.user.log = res.user.log.filter((item) => {
+      return new Date(item.date) >= new Date(from)
+    })
+  }
+  if (to !== undefined) {
+    res.user.log = res.user.log.filter((item) => {
+      return new Date(item.date) <= new Date(to)
+    })
+  }
+  if (limit !== undefined) {
+    res.user.log = res.user.log.slice(0, limit)
+  }
   res.json(res.user)
 })
 
