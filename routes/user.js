@@ -5,10 +5,9 @@ const User = require('../models/user')
 router.get('/', async (req, res) => {
   try {
     const user = await User.find().select({ username: 1, _id: 1 })
-
     res.json(user)
   } catch (err) {
-    console.log(err)
+    return res.status(500).json({ message: err.message })
   }
 })
 
@@ -21,7 +20,7 @@ router.post('/', async (req, res) => {
     const newUser = await user.save()
     res.status(201).json({ username: newUser.username, _id: newUser._id })
   } catch (err) {
-    console.log(err)
+    return res.status(500).json({ message: err.message })
   }
 })
 
@@ -30,19 +29,18 @@ router.get('/all', async (req, res) => {
     const user = await User.find()
     res.json(user)
   } catch (err) {
-    console.log(err)
+    return res.status(500).json({ message: err.message })
   }
 })
 
 router.post('/:_id/exercises', getUser, async (req, res) => {
-  const description = req.body.description
-  const duration = req.body.duration
-  let date = req.body.date
+  let { description, duration, date } = req.body
   if (date) {
     date = new Date(date).toDateString()
   } else {
     date = new Date().toDateString()
   }
+  duration = Number(duration)
   console.log(description, duration, date)
   const exercise = { description, duration, date }
   res.user.log.push(exercise)
@@ -61,16 +59,8 @@ router.post('/:_id/exercises', getUser, async (req, res) => {
   }
 })
 
-router.get('/:id/logs', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id)
-    if (user === null) {
-      return res.status(404).json({ message: 'Could not find the user' })
-    }
-    res.json(user)
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
+router.get('/:_id/logs', getUser, (req, res) => {
+  res.json(res.user)
 })
 
 router.delete('/:_id', async (req, res) => {
@@ -88,7 +78,7 @@ router.delete('/:_id', async (req, res) => {
 async function getUser(req, res, next) {
   let user
   try {
-    user = await User.findById(req.body[':_id'])
+    user = await User.findById(req.params._id)
     if (user === null) {
       return res.status(404).json({ message: 'Could not find the user' })
     }
