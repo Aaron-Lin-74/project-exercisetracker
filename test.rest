@@ -1,0 +1,42 @@
+GET http://localhost:3000/api/users
+
+###
+
+GET http://localhost:3000/api/users/all
+
+###
+
+DELETE http://localhost:3000/api/users/61958b00efecb37d2873b42a
+###
+
+POST http://localhost:3000/api/users
+content-type: application/json
+
+{
+ "username": "test"
+}
+
+###
+
+POST http://localhost:3000/api/users/:_id/exercises
+content-type: application/json
+
+{
+ "description": "push up",
+ "duration": 20,
+ "date":"2021-12-12",
+ ":_id": "6195a43cde5dcd520edaaf62"
+}
+
+###
+POST http://localhost:3000/api/users/:_id/exercises
+content-type: application/json
+
+{
+ "description": "jogging",
+ "duration": 30,
+ "date":"",
+ ":_id": "6195a43cde5dcd520edaaf62"
+}
+###
+GET http://localhost:3000/api/users/6195a43cde5dcd520edaaf62/logs
